@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Áudios de Estudo - Reprodução Bovina</title>
+    
+    <!-- Importação da fonte Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- Reset e Estilos Globais --- */
+        :root {
+            --dark-bg: #0a0c1c;
+            --card-bg: #161b22;
+            --text-primary: #f0f0f0;
+            --text-secondary: #a0a8b3;
+            --border-color: #30363d;
+            --gradient: linear-gradient(90deg, #8e2de2, #4a00e0);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--dark-bg);
+            color: var(--text-primary);
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* --- Estilos do Preloader --- */
+        .preloader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--dark-bg);
+            z-index: 9999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            gap: 1.5rem;
+            transition: opacity 0.75s ease;
+        }
+
+        .preloader-hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+        
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(142, 45, 226, 0.4);
+            }
+            70% {
+                transform: scale(1.05);
+                box-shadow: 0 0 10px 20px rgba(142, 45, 226, 0);
+            }
+            100% {
+                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(142, 45, 226, 0);
+            }
+        }
+
+        .preloader-icon {
+            width: 80px;
+            height: 80px;
+            background: var(--gradient);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            animation: pulse 2s infinite;
+        }
+        
+        .preloader-icon::before {
+            content: '';
+            width: 70%;
+            height: 70%;
+            background-color: var(--dark-bg);
+            border-radius: 50%;
+        }
+
+        .preloader-text {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+        
+        .preloader-percentage {
+            color: var(--text-primary);
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+
+        /* --- Estrutura de Responsividade --- */
+        .desktop-blocker {
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            height: 100vh;
+            padding: 2rem;
+            background-color: var(--dark-bg);
+        }
+
+        .desktop-blocker .icon { width: 80px; height: 80px; margin-bottom: 1.5rem; color: #4a00e0; }
+        .desktop-blocker h1 { font-size: 1.8rem; margin-bottom: 0.5rem; }
+        .desktop-blocker p { font-size: 1.1rem; color: var(--text-secondary); max-width: 400px; }
+
+        .mobile-content {
+            display: block;
+            padding: 1.5rem 1rem 3rem;
+            overflow-x: hidden;
+            /* Inicia invisível e com animação de fade-in */
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+        
+        .mobile-content.loaded {
+            opacity: 1;
+        }
+
+
+        @media (min-width: 768px) {
+            .desktop-blocker { display: flex; }
+            .mobile-content { display: none; }
+        }
+
+        /* --- Estilização do Conteúdo Mobile --- */
+        .page-header { text-align: center; margin-bottom: 2.5rem; }
+        .page-header h1 {
+            font-size: 1.85rem;
+            font-weight: 700;
+            background: var(--gradient);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            background-clip: text; text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+            animation: fadeInHeader 0.6s ease forwards;
+        }
+        
+        @keyframes fadeInHeader { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes slideInUp { from { opacity: 0; transform: translateY(25px); } to { opacity: 1; transform: translateY(0); } }
+
+        .page-header .subtitle {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+            opacity: 0;
+            animation: slideInUp 0.7s ease 0.3s forwards;
+        }
+
+        .audio-list { display: flex; flex-direction: column; gap: 1.75rem; }
+
+        @keyframes fadeInCard { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        .audio-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 1.25rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            opacity: 0;
+            animation: fadeInCard 0.5s ease forwards;
+        }
+        
+        .audio-card.is-playing { border-color: #8e2de2; box-shadow: 0 0 20px rgba(142, 45, 226, 0.25); }
+        .audio-card h3 { font-size: 1.15rem; font-weight: 600; color: var(--text-primary); line-height: 1.4; margin-bottom: 0.5rem; }
+        .audio-description { font-size: 0.9rem; color: var(--text-secondary); line-height: 1.6; padding-bottom: 1rem; border-bottom: 1px solid var(--border-color); }
+        .player-controls { display: flex; align-items: center; gap: 1rem; }
+        .play-pause-btn { background: transparent; border: none; cursor: pointer; padding: 0; color: var(--text-primary); transition: transform 0.2s ease, color 0.2s ease; }
+        .play-pause-btn:hover { color: #a46de5; }
+        .play-pause-btn:active { transform: scale(0.9); }
+        .play-pause-btn .icon { width: 40px; height: 40px; }
+        .pause-icon { display: none; }
+        .progress-container { flex-grow: 1; display: flex; flex-direction: column; gap: 0.25rem; }
+        .progress-bar-wrapper { background-color: #30363d; height: 8px; border-radius: 10px; cursor: pointer; overflow: hidden; }
+        .progress-bar { width: 0%; height: 100%; background: var(--gradient); border-radius: 10px; transition: width 0.1s linear; }
+        .time-display { display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--text-secondary); font-weight: 500; }
+        audio { display: none; }
+        .back-button { display: flex; align-items: center; justify-content: center; gap: 0.5rem; width: 100%; padding: 0.8rem 1rem; margin-top: 3rem; text-align: center; text-decoration: none; font-weight: 600; font-size: 1rem; color: var(--text-primary); background: var(--gradient); border: none; border-radius: 8px; cursor: pointer; transition: transform 0.2s ease, box-shadow 0.2s ease; }
+        .back-button:hover { transform: translateY(-2px); box-shadow: 0 4px 20px rgba(130, 45, 224, 0.4); }
+        .back-button .icon { width: 20px; height: 20px; }
+        .page-footer { text-align: center; padding-top: 2rem; margin-top: 2rem; border-top: 1px solid var(--border-color); }
+        .page-footer p { color: var(--text-secondary); font-size: 0.8rem; line-height: 1.5; }
+        .page-footer p:first-child { font-weight: 500; margin-bottom: 0.25rem; }
+    </style>
+</head>
+<body>
+
+    <!-- Preloader -->
+    <div class="preloader">
+        <div class="preloader-icon"></div>
+        <p class="preloader-text">Preparando seus áudios de estudo...</p>
+        <div class="preloader-percentage">0%</div>
+    </div>
+
+    <div class="desktop-blocker">
+        <svg class="icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a11 11 0 0 0-9 5.42 11 11 0 0 0 0 11.16A11 11 0 0 0 12 23a11 11 0 0 0 9-5.42 11 11 0 0 0 0-11.16A11 11 0 0 0 12 1Z"></path><path d="M7 4a10.94 10.94 0 0 0-3 3.42"></path><path d="M17 4a10.94 10.94 0 0 1 3 3.42"></path><path d="M7 20a10.94 10.94 0 0 1-3-3.42"></path><path d="M17 20a10.94 10.94 0 0 0 3-3.42"></path><rect width="10" height="16" x="7" y="4" rx="2"></rect></svg>
+        <h1>Página Otimizada para Celulares</h1>
+        <p>Esta página foi desenvolvida exclusivamente para uma melhor experiência em smartphones. Por favor, acesse pelo seu celular.</p>
+    </div>
+
+    <main class="mobile-content">
+        <header class="page-header">
+            <h1>Áudios de Estudo</h1>
+            <p class="subtitle">Todo o resumo do site para você ouvir onde e quando quiser!</p>
+        </header>
+
+        <section class="audio-list">
+            <article class="audio-card" style="animation-delay: 0.3s;">
+                <h3>🎧 Aspiração Folicular e Seleção de Oócitos</h3>
+                <p class="audio-description">Entenda como é realizada a aspiração folicular em bovinos e aprenda os critérios usados para identificar e selecionar oócitos viáveis no laboratório. Este áudio detalha técnicas, equipamentos e cuidados essenciais para garantir o sucesso do procedimento.</p>
+                <div class="player-controls">
+                    <button class="play-pause-btn" aria-label="Tocar/Pausar"><svg class="icon play-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"></path></svg><svg class="icon pause-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"></path></svg></button>
+                    <div class="progress-container"><div class="progress-bar-wrapper"><div class="progress-bar"></div></div><div class="time-display"><span class="current-time">00:00</span><span class="total-duration">00:00</span></div></div>
+                </div>
+                <audio src="placeholder.mp3" preload="metadata"></audio>
+            </article>
+
+            <article class="audio-card" style="animation-delay: 0.4s;">
+                <h3>🎧 Biotecnologias da Reprodução</h3>
+                <p class="audio-description">Introdução às principais biotecnologias reprodutivas utilizadas em bovinos, como a inseminação artificial, sincronização do estro e manipulação hormonal. Ideal para quem deseja compreender os fundamentos da reprodução assistida.</p>
+                <div class="player-controls">
+                     <button class="play-pause-btn" aria-label="Tocar/Pausar"><svg class="icon play-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"></path></svg><svg class="icon pause-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"></path></svg></button>
+                    <div class="progress-container"><div class="progress-bar-wrapper"><div class="progress-bar"></div></div><div class="time-display"><span class="current-time">00:00</span><span class="total-duration">00:00</span></div></div>
+                </div>
+                <audio src="placeholder.mp3" preload="metadata"></audio>
+            </article>
+
+            <article class="audio-card" style="animation-delay: 0.5s;">
+                <h3>🎧 Fisiologia da Reprodução</h3>
+                <p class="audio-description">Aprofunde-se nos aspectos fisiológicos que controlam a reprodução em bovinos, incluindo os ciclos hormonais, controle endócrino, dinâmica folicular e mecanismos que regulam a ovulação, fecundação e gestação. Ideal para construir uma base sólida antes de aplicar biotécnicas reprodutivas.</p>
+                <div class="player-controls">
+                     <button class="play-pause-btn" aria-label="Tocar/Pausar"><svg class="icon play-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"></path></svg><svg class="icon pause-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"></path></svg></button>
+                    <div class="progress-container"><div class="progress-bar-wrapper"><div class="progress-bar"></div></div><div class="time-display"><span class="current-time">00:00</span><span class="total-duration">00:00</span></div></div>
+                </div>
+                <audio src="placeholder.mp3" preload="metadata"></audio>
+            </article>
+
+            <article class="audio-card" style="animation-delay: 0.6s;">
+                <h3>🎧 Produção In Vitro de Embriões (PIVE)</h3>
+                <p class="audio-description">Descubra como funciona o processo completo de Produção In Vitro de Embriões: da maturação oocitária à fecundação e cultivo embrionário. Este áudio traz conceitos-chave e práticas laboratoriais aplicadas na rotina da PIVE.</p>
+                <div class="player-controls">
+                     <button class="play-pause-btn" aria-label="Tocar/Pausar"><svg class="icon play-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"></path></svg><svg class="icon pause-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"></path></svg></button>
+                    <div class="progress-container"><div class="progress-bar-wrapper"><div class="progress-bar"></div></div><div class="time-display"><span class="current-time">00:00</span><span class="total-duration">00:00</span></div></div>
+                </div>
+                <audio src="placeholder.mp3" preload="metadata"></audio>
+            </article>
+
+            <article class="audio-card" style="animation-delay: 0.7s;">
+                <h3>🎧 Transferência de Embriões (TE)</h3>
+                <p class="audio-description">Conheça todas as etapas da Transferência de Embriões em bovinos, desde a escolha da receptora até a deposição do embrião. O conteúdo abrange as boas práticas e os desafios enfrentados no campo e no laboratório.</p>
+                <div class="player-controls">
+                    <button class="play-pause-btn" aria-label="Tocar/Pausar"><svg class="icon play-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"></path></svg><svg class="icon pause-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"></path></svg></button>
+                    <div class="progress-container"><div class="progress-bar-wrapper"><div class="progress-bar"></div></div><div class="time-display"><span class="current-time">00:00</span><span class="total-duration">00:00</span></div></div>
+                </div>
+                <audio src="placeholder.mp3" preload="metadata"></audio>
+            </article>
+        </section>
+
+        <a href="https://repro-fiv.vercel.app/#/" class="back-button"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"></path></svg><span>Voltar ao Site Principal</span></a>
+
+        <footer class="page-footer"><p>© 2025 - Mv. Pedro Henrique | Guia de estudos.</p><p>Desenvolvido por Pedro Henrique com base em conteúdos online.</p></footer>
+    </main>
+
+    <script>
+        // --- Lógica do Preloader ---
+        const preloader = document.querySelector('.preloader');
+        const mobileContent = document.querySelector('.mobile-content');
+        const percentageText = document.querySelector('.preloader-percentage');
+
+        let progress = 0;
+        const interval = setInterval(() => {
+            progress++;
+            percentageText.textContent = `${progress}%`;
+            if (progress >= 100) {
+                clearInterval(interval);
+                preloader.classList.add('preloader-hidden');
+                
+                // Adiciona a classe para o conteúdo aparecer com fade-in
+                mobileContent.classList.add('loaded');
+
+                setTimeout(() => {
+                    preloader.style.display = 'none';
+                }, 750); // Tempo igual à transição de opacidade do preloader
+            }
+        }, 30); // Aumenta o progresso a cada 30ms
+
+        // --- Lógica dos Players de Áudio ---
+        document.addEventListener('DOMContentLoaded', () => {
+            const audioCards = document.querySelectorAll('.audio-card');
+            audioCards.forEach(card => {
+                const audio = card.querySelector('audio');
+                const playPauseBtn = card.querySelector('.play-pause-btn');
+                const playIcon = card.querySelector('.play-icon');
+                const pauseIcon = card.querySelector('.pause-icon');
+                const progressBar = card.querySelector('.progress-bar');
+                const progressBarWrapper = card.querySelector('.progress-bar-wrapper');
+                const currentTimeEl = card.querySelector('.current-time');
+                const totalDurationEl = card.querySelector('.total-duration');
+                
+                const formatTime = (time) => {
+                    if (isNaN(time)) return '00:00';
+                    const minutes = Math.floor(time / 60);
+                    const seconds = Math.floor(time % 60);
+                    return `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+                };
+
+                const playAudio = () => { card.classList.add('is-playing'); playIcon.style.display = 'none'; pauseIcon.style.display = 'block'; audio.play(); };
+                const pauseAudio = () => { card.classList.remove('is-playing'); playIcon.style.display = 'block'; pauseIcon.style.display = 'none'; audio.pause(); };
+                
+                playPauseBtn.addEventListener('click', () => {
+                    const isPlaying = card.classList.contains('is-playing');
+                    if (isPlaying) {
+                        pauseAudio();
+                    } else {
+                        document.querySelectorAll('audio').forEach(otherAudio => { if(otherAudio !== audio) { otherAudio.pause(); } });
+                        playAudio();
+                    }
+                });
+
+                audio.addEventListener('play', playAudio);
+                audio.addEventListener('pause', pauseAudio);
+
+                audio.addEventListener('timeupdate', () => {
+                    const { currentTime, duration } = audio;
+                    if (duration) {
+                        progressBar.style.width = `${(currentTime / duration) * 100}%`;
+                        currentTimeEl.textContent = formatTime(currentTime);
+                    }
+                });
+
+                audio.addEventListener('loadedmetadata', () => { totalDurationEl.textContent = formatTime(audio.duration); });
+
+                progressBarWrapper.addEventListener('click', (e) => {
+                    const width = progressBarWrapper.clientWidth;
+                    const clickX = e.offsetX;
+                    const duration = audio.duration;
+                    if(duration) { audio.currentTime = (clickX / width) * duration; }
+                });
+                
+                audio.addEventListener('ended', () => { pauseAudio(); audio.currentTime = 0; });
+            });
+        });
+    </script>
+
+</body>
+</html>
