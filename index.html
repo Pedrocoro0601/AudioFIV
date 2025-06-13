@@ -125,6 +125,66 @@
         .back-button { display: flex; align-items: center; justify-content: center; gap: 0.5rem; width: 100%; padding: 0.8rem 1rem; margin-top: 3rem; text-align: center; text-decoration: none; font-weight: 600; font-size: 1rem; color: var(--text-primary); background: var(--gradient); border: none; border-radius: 8px; cursor: pointer; transition: transform 0.2s ease, box-shadow 0.2s ease; }
         .back-button:hover { transform: translateY(-2px); box-shadow: 0 4px 20px rgba(130, 45, 224, 0.4); }
         .back-button .icon { width: 20px; height: 20px; }
+        
+        /* --- NOVA SEÇÃO: Estilos para Conteúdo em Produção --- */
+        .exclusive-section {
+            background: radial-gradient(ellipse at center, rgba(40, 20, 80, 0.4), var(--card-bg) 70%);
+            border: 1px solid var(--border-color);
+            box-shadow: 0 0 15px rgba(142, 45, 226, 0.2), 0 0 5px rgba(142, 45, 226, 0.1);
+            border-radius: 16px;
+            padding: 2rem 1.5rem;
+            margin-top: 2.5rem;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+            opacity: 0;
+            animation: fadeInCard 0.6s ease 0.8s forwards;
+            overflow: hidden;
+            position: relative;
+        }
+        .exclusive-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, rgba(142, 45, 226, 0.1), transparent, rgba(30, 215, 96, 0.1));
+            animation: rotate-glow 8s linear infinite;
+            z-index: 1;
+        }
+        @keyframes rotate-glow {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        .exclusive-section .icon {
+            width: 45px;
+            height: 45px;
+            color: #8e2de2;
+            opacity: 1;
+            z-index: 2;
+        }
+        .exclusive-section h2 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-fill-color: transparent;
+            z-index: 2;
+        }
+        .exclusive-section p {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            max-width: 95%;
+            z-index: 2;
+        }
+
         .page-footer { text-align: center; padding-top: 2rem; margin-top: 2rem; border-top: 1px solid var(--border-color); }
         .page-footer p { color: var(--text-secondary); font-size: 0.8rem; line-height: 1.5; }
         .page-footer p:first-child { font-weight: 500; margin-bottom: 0.25rem; }
@@ -169,7 +229,7 @@
                 <h3>🎧 Biotecnologias da Reprodução</h3>
                 <p class="audio-description">Introdução às principais biotecnologias reprodutivas utilizadas em bovinos, como a inseminação artificial, sincronização do estro e manipulação hormonal. Ideal para quem deseja compreender os fundamentos da reprodução assistida.</p>
                 <div class="player-controls">
-                     <button class="play-pause-btn" aria-label="Tocar/Pausar"><svg class="icon play-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"></path></svg><svg class="icon pause-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"></path></svg></button>
+                    <button class="play-pause-btn" aria-label="Tocar/Pausar"><svg class="icon play-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"></path></svg><svg class="icon pause-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"></path></svg></button>
                     <div class="progress-container"><div class="progress-bar-wrapper"><div class="progress-bar"></div></div><div class="time-display"><span class="current-time">00:00</span><span class="total-duration">00:00</span></div></div>
                 </div>
                 <audio src="Biotecnologias da reprodução.wav" preload="metadata"></audio>
@@ -179,7 +239,7 @@
                 <h3>🎧 Fisiologia da Reprodução</h3>
                 <p class="audio-description">Explore os fundamentos da fisiologia reprodutiva bovina com foco nos mecanismos hormonais e anatômicos que regulam o ciclo estral, ovulação, formação do corpo lúteo e dinâmica folicular. Este áudio aborda o eixo hipotálamo-hipófise-gonadal, o papel dos principais hormônios (GnRH, FSH, LH, estradiol, progesterona e prostaglandinas), e as fases do ciclo estral (proestro, estro, metaestro e diestro), destacando sua importância no manejo reprodutivo e na aplicação de biotécnicas como FIV e TE. Ideal para quem busca uma base sólida e prática na reprodução animal.</p>
                 <div class="player-controls">
-                     <button class="play-pause-btn" aria-label="Tocar/Pausar"><svg class="icon play-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"></path></svg><svg class="icon pause-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"></path></svg></button>
+                    <button class="play-pause-btn" aria-label="Tocar/Pausar"><svg class="icon play-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"></path></svg><svg class="icon pause-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"></path></svg></button>
                     <div class="progress-container"><div class="progress-bar-wrapper"><div class="progress-bar"></div></div><div class="time-display"><span class="current-time">00:00</span><span class="total-duration">00:00</span></div></div>
                 </div>
                 <audio src="Fisiologia da Reprodução.wav" preload="metadata"></audio>
@@ -189,7 +249,7 @@
                 <h3>🎧 Produção In Vitro de Embriões (PIVE)</h3>
                 <p class="audio-description">Descubra como funciona o processo completo de Produção In Vitro de Embriões: da maturação oocitária à fecundação e cultivo embrionário. Este áudio traz conceitos-chave e práticas laboratoriais aplicadas na rotina da PIVE.</p>
                 <div class="player-controls">
-                     <button class="play-pause-btn" aria-label="Tocar/Pausar"><svg class="icon play-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"></path></svg><svg class="icon pause-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"></path></svg></button>
+                    <button class="play-pause-btn" aria-label="Tocar/Pausar"><svg class="icon play-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"></path></svg><svg class="icon pause-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"></path></svg></button>
                     <div class="progress-container"><div class="progress-bar-wrapper"><div class="progress-bar"></div></div><div class="time-display"><span class="current-time">00:00</span><span class="total-duration">00:00</span></div></div>
                 </div>
                 <audio src="Produção In Vitro de Embriões (PIVE).wav" preload="metadata"></audio>
@@ -208,7 +268,16 @@
 
         <a href="https://repro-fiv.vercel.app/#/" class="back-button"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"></path></svg><span>Voltar ao Site Principal</span></a>
 
-        <footer class="page-footer"><p>© 2025 - Mv. Pedro Henrique | Guia de estudos.</p><p>Desenvolvido por Pedro Henrique com base em conteúdos online.</p></footer>
+        <section class="exclusive-section">
+             <svg class="icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 10v4"></path><path d="M6 7v10"></path><path d="M10 4v16"></path><path d="M14 7v10"></path><path d="M18 10v4"></path><path d="M22 10v4"></path></svg>
+            <h2>Áudios sobre Reprodução animal em geral</h2>
+            <p>Novos conteúdos e temas estão a caminho. Amplie seus conhecimentos com os próximos lançamentos de áudios exclusivos!</p>
+        </section>
+        
+        <footer class="page-footer">
+            <p>© 2024 - Mv. Pedro Henrique | Guia de estudos.</p>
+            <p>Desenvolvido por Pedro Henrique com base em conteúdos online.</p>
+        </footer>
     </main>
 
     <script>
@@ -237,6 +306,8 @@
         // --- Lógica dos Players de Áudio ---
         document.addEventListener('DOMContentLoaded', () => {
             const audioCards = document.querySelectorAll('.audio-card');
+            let currentlyPlaying = null;
+
             audioCards.forEach(card => {
                 const audio = card.querySelector('audio');
                 const playPauseBtn = card.querySelector('.play-pause-btn');
@@ -254,21 +325,52 @@
                     return `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
                 };
 
-                const playAudio = () => { card.classList.add('is-playing'); playIcon.style.display = 'none'; pauseIcon.style.display = 'block'; audio.play(); };
-                const pauseAudio = () => { card.classList.remove('is-playing'); playIcon.style.display = 'block'; pauseIcon.style.display = 'none'; audio.pause(); };
+                const updatePlayIcon = (isPlaying) => {
+                    if (isPlaying) {
+                        card.classList.add('is-playing');
+                        playIcon.style.display = 'none';
+                        pauseIcon.style.display = 'block';
+                    } else {
+                        card.classList.remove('is-playing');
+                        playIcon.style.display = 'block';
+                        pauseIcon.style.display = 'none';
+                    }
+                };
                 
                 playPauseBtn.addEventListener('click', () => {
-                    const isPlaying = card.classList.contains('is-playing');
-                    if (isPlaying) {
-                        pauseAudio();
+                    if (currentlyPlaying && currentlyPlaying !== audio) {
+                        currentlyPlaying.pause();
+                    }
+                    
+                    if (audio.paused) {
+                        audio.play();
+                        currentlyPlaying = audio;
                     } else {
-                        document.querySelectorAll('audio').forEach(otherAudio => { if(otherAudio !== audio) { otherAudio.pause(); } });
-                        playAudio();
+                        audio.pause();
+                        currentlyPlaying = null;
                     }
                 });
 
-                audio.addEventListener('play', playAudio);
-                audio.addEventListener('pause', pauseAudio);
+                audio.addEventListener('play', () => {
+                    updatePlayIcon(true);
+                    // Garante que outros cards mostrem o ícone de play
+                    audioCards.forEach(otherCard => {
+                        if (otherCard !== card) {
+                            const otherPlayIcon = otherCard.querySelector('.play-icon');
+                            const otherPauseIcon = otherCard.querySelector('.pause-icon');
+                            otherCard.classList.remove('is-playing');
+                            otherPlayIcon.style.display = 'block';
+                            otherPauseIcon.style.display = 'none';
+                        }
+                    });
+                });
+                
+                audio.addEventListener('pause', () => updatePlayIcon(false));
+                audio.addEventListener('ended', () => {
+                    updatePlayIcon(false);
+                    audio.currentTime = 0;
+                    currentlyPlaying = null;
+                });
 
                 audio.addEventListener('timeupdate', () => {
                     const { currentTime, duration } = audio;
@@ -278,16 +380,18 @@
                     }
                 });
 
-                audio.addEventListener('loadedmetadata', () => { totalDurationEl.textContent = formatTime(audio.duration); });
+                audio.addEventListener('loadedmetadata', () => {
+                    totalDurationEl.textContent = formatTime(audio.duration);
+                });
 
                 progressBarWrapper.addEventListener('click', (e) => {
                     const width = progressBarWrapper.clientWidth;
                     const clickX = e.offsetX;
                     const duration = audio.duration;
-                    if(duration) { audio.currentTime = (clickX / width) * duration; }
+                    if(duration) {
+                        audio.currentTime = (clickX / width) * duration;
+                    }
                 });
-                
-                audio.addEventListener('ended', () => { pauseAudio(); audio.currentTime = 0; });
             });
         });
     </script>
