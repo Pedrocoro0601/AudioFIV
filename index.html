@@ -19,6 +19,7 @@
             --text-secondary: #a0a8b3;
             --border-color: #30363d;
             --gradient: linear-gradient(90deg, #8e2de2, #4a00e0);
+            --gradient-green: linear-gradient(90deg, #1DB954, #1ED760); 
         }
 
         * {
@@ -127,7 +128,6 @@
             display: block;
             padding: 1.5rem 1rem 3rem;
             overflow-x: hidden;
-            /* Inicia invisível e com animação de fade-in */
             opacity: 0;
             transition: opacity 0.5s ease;
         }
@@ -159,12 +159,33 @@
 
         .page-header .subtitle {
             font-size: 1rem;
+            line-height: 1.5;
             color: var(--text-secondary);
             font-weight: 500;
             opacity: 0;
             animation: slideInUp 0.7s ease 0.3s forwards;
         }
+        
+        @keyframes animateGradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
 
+        .page-header .gradient-text-purple {
+            display: block;
+            background: var(--gradient);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-fill-color: transparent;
+            animation: animateGradient 5s ease infinite;
+            font-weight: 600;
+            line-height: 1.4;
+            margin: 0.3rem 0;
+        }
+        
         .audio-list { display: flex; flex-direction: column; gap: 1.75rem; }
 
         @keyframes fadeInCard { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
@@ -222,7 +243,11 @@
     <main class="mobile-content">
         <header class="page-header">
             <h1>Áudios de Estudo</h1>
-            <p class="subtitle">Todo o resumo do site para você ouvir onde e quando quiser!</p>
+            <p class="subtitle">
+                Todo o resumo do site
+                <span class="gradient-text-purple">Reprodução animal<br>Guia de estudo em biotecnologias da reprodução</span>
+                para você ouvir onde e quando quiser!
+            </p>
         </header>
 
         <section class="audio-list">
@@ -248,7 +273,7 @@
 
             <article class="audio-card" style="animation-delay: 0.5s;">
                 <h3>🎧 Fisiologia da Reprodução</h3>
-                <p class="audio-description">Aprofunde-se nos aspectos fisiológicos que controlam a reprodução em bovinos, incluindo os ciclos hormonais, controle endócrino, dinâmica folicular e mecanismos que regulam a ovulação, fecundação e gestação. Ideal para construir uma base sólida antes de aplicar biotécnicas reprodutivas.</p>
+                <p class="audio-description">Explore os fundamentos da fisiologia reprodutiva bovina com foco nos mecanismos hormonais e anatômicos que regulam o ciclo estral, ovulação, formação do corpo lúteo e dinâmica folicular. Este áudio aborda o eixo hipotálamo-hipófise-gonadal, o papel dos principais hormônios (GnRH, FSH, LH, estradiol, progesterona e prostaglandinas), e as fases do ciclo estral (proestro, estro, metaestro e diestro), destacando sua importância no manejo reprodutivo e na aplicação de biotécnicas como FIV e TE. Ideal para quem busca uma base sólida e prática na reprodução animal.</p>
                 <div class="player-controls">
                      <button class="play-pause-btn" aria-label="Tocar/Pausar"><svg class="icon play-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"></path></svg><svg class="icon pause-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"></path></svg></button>
                     <div class="progress-container"><div class="progress-bar-wrapper"><div class="progress-bar"></div></div><div class="time-display"><span class="current-time">00:00</span><span class="total-duration">00:00</span></div></div>
