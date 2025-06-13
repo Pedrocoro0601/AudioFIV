@@ -159,13 +159,28 @@
             from { transform: rotate(0deg); }
             to { transform: rotate(360deg); }
         }
-        .exclusive-section .icon {
-            width: 45px;
-            height: 45px;
-            color: #8e2de2;
-            opacity: 1;
+        .sound-wave-icon {
+            display: flex;
+            align-items: flex-end;
+            height: 40px;
+            gap: 5px;
             z-index: 2;
         }
+        .sound-wave-icon span {
+            width: 6px;
+            height: 10px;
+            background: var(--gradient);
+            border-radius: 4px;
+            animation: wave 1.2s infinite ease-in-out;
+        }
+        @keyframes wave {
+            0%, 100% { height: 10px; }
+            50% { height: 35px; }
+        }
+        .sound-wave-icon span:nth-child(2) { animation-delay: -1.0s; }
+        .sound-wave-icon span:nth-child(3) { animation-delay: -0.8s; }
+        .sound-wave-icon span:nth-child(4) { animation-delay: -0.6s; }
+
         .exclusive-section h2 {
             font-size: 1.25rem;
             font-weight: 700;
@@ -182,6 +197,16 @@
             color: var(--text-secondary);
             line-height: 1.6;
             max-width: 95%;
+            z-index: 2;
+            margin-bottom: 0;
+        }
+        .in-production-text {
+            font-style: italic;
+            font-weight: 500;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            opacity: 0.8;
+            margin-top: 0.5rem;
             z-index: 2;
         }
 
@@ -269,9 +294,15 @@
         <a href="https://repro-fiv.vercel.app/#/" class="back-button"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"></path></svg><span>Voltar ao Site Principal</span></a>
 
         <section class="exclusive-section">
-             <svg class="icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 10v4"></path><path d="M6 7v10"></path><path d="M10 4v16"></path><path d="M14 7v10"></path><path d="M18 10v4"></path><path d="M22 10v4"></path></svg>
+            <div class="sound-wave-icon">
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
             <h2>Áudios sobre Reprodução animal em geral</h2>
             <p>Novos conteúdos e temas estão a caminho. Amplie seus conhecimentos com os próximos lançamentos de áudios exclusivos!</p>
+            <p class="in-production-text">Em produção...</p>
         </section>
         
         <footer class="page-footer">
